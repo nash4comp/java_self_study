@@ -1,4 +1,4 @@
-package chap05;
+package Chap05;
 
 public class ArrayEx1 {
 
@@ -16,7 +16,7 @@ public class ArrayEx1 {
             System.out.printf("score[%d]:%d%n", i, score[i]);
         }
         System.out.printf("tmp:%d%n", tmp);
-        
+
         // 범위를 벗어난 배열이므로 에러가 난다.
         System.out.printf("score[%d]:%d%n", 7, score[7]);
     }

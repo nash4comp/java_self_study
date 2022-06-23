@@ -2,8 +2,7 @@
 // for문으로 복사하는 것보다 빠르다.
 // public static void arraycopy​(Object src, int srcPos, Object dest, int destPos, int length)
 
-
-package chap05;
+package Chap05;
 
 public class ArrayEx4 {
 
@@ -21,11 +20,11 @@ public class ArrayEx4 {
         // num을 result로 (abc에) 이어서 복사
         System.arraycopy(num, 0, result, abc.length, num.length);
         System.out.println(result);
-        
+
         // abc를 abc의 길이만큼 num에 복사
         System.arraycopy(abc, 0, num, 0, abc.length);
         System.out.println(num);
-        
+
         // abc를 result의 6번 인덱스부터 3개만 복사
         System.arraycopy(abc, 0, num, 6, 3);
         System.out.println(num);

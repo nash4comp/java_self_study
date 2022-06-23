@@ -1,4 +1,4 @@
-package chap05;
+package Chap05;
 
 public class ArrayEx3 {
 
@@ -16,16 +16,16 @@ public class ArrayEx3 {
         }
         int[] tmp = new int[arr.length * 2];
 
-        for(int i=0; i<arr.length;i++) {
+        for (int i = 0; i < arr.length; i++) {
             tmp[i] = arr[i];
         }
-        arr=tmp;
+        arr = tmp;
         System.out.println("[변경 후]");
-        System.out.println("arr.length:"+arr.length);
-        
+        System.out.println("arr.length:" + arr.length);
+
         // 배열은 생성하면 초기값이 0이다.
-        for(int i=0;i<arr.length;i++) {
-            System.out.println("arr["+i+"]:"+arr[i]);
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println("arr[" + i + "]:" + arr[i]);
         }
     }
 

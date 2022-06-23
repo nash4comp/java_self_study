@@ -1,4 +1,4 @@
-package chap05;
+package Chap05;
 
 public class ArrayEx8 {
 

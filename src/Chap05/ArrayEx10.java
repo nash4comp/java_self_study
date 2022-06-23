@@ -1,7 +1,7 @@
 // 버블정렬(bubble sort) 알고리즘
 // 비효율적이지만, 간단하다.
 
-package chap05;
+package Chap05;
 
 public class ArrayEx10 {
 

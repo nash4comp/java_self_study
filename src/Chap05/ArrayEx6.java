@@ -2,7 +2,7 @@
 // default max, min 값을 0번 인덱스 값으로 기준점을 설정하고 for loop을 돌려서 비교
 // 사실 기준점은 어떤 인덱스 값을 하든 상관은 없다.
 
-package chap05;
+package Chap05;
 
 public class ArrayEx6 {
 

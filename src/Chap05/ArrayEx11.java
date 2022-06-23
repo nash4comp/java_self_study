@@ -1,7 +1,7 @@
 // 배열에서 특정 값의 빈도수 구하기
 // 배열의 특징이 순차적인 인덱스로 구성이 되어있다는 것을 활용한 예제
 
-package chap05;
+package Chap05;
 
 public class ArrayEx11 {
 
