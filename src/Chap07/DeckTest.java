@@ -62,7 +62,7 @@ class Deck {
     } // end of shuffle
 } // end of class Deck
 
-class Card {
+class Card2 {
     static final int KIND_MAX = 4;
     static final int NUM_MAX = 13;
     static final int SPADE = 4;
@@ -72,12 +72,12 @@ class Card {
     int kind;
     int number;
 
-    Card() {
+    Card2() {
         this(SPADE, 1);
     } // end of constructor Card
 
     // Overloaded constructor
-    Card(int kind, int number) {
+    Card2(int kind, int number) {
         this.kind = kind;
         this.number = number;
     } // end of constructor Card
