@@ -46,6 +46,7 @@ class Parent6 {
 // Child6 클래스는 Parent6 클래스를 상속하고, MyInterface, MyInterface2 인터페이스를 구현한다.
 // 하지만, 인터페이스들은 따로 구현할 메서드가 없다.
 class Child6 extends Parent6 implements MyInterface, MyInterface2 {
+    // method1 메서드만 오버라이딩 했다.
     public void method1() {
         System.out.println("method1() in Child");
     }
