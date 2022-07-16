@@ -1,0 +1,1334 @@
+7-2
+
+public class DrawShape {
+
+    public static void main(String[] args) {
+        // p1 = new Point(100, 100)
+        // p2 = new Point(140, 50)
+        // p3 = new Point(200, 100)
+        // Point[] p = {p1, p2 ,p3}
+
+        Point[] p = { new Point(100, 100), new Point(140, 50),
+                new Point(200, 100) };
+        Triangle t = new Triangle(p);
+        Circle c = new Circle(new Point(150, 150), 50);
+        t.draw();
+        c.draw();
+
+    } // end of main
+
+} // end of class DrawShape
+
+class Shape {
+    String color = "black";
+
+    void draw() {
+        System.out.printf("[color=%s]%n", color);
+
+    } // end of draw
+
+} // end of class Shape
+
+// x, y 좌표를 갖는 클래스
+class Point {
+    int x;
+    int y;
+
+    // Point 클래스의 생성자.
+    // parameter가 없으면, 오버로딩된 Point(0, 0)를 호출한다.
+    Point() {
+        this(0, 0);
+    } // end of constructor Point
+
+    Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+
+    } // end of constructor Point
+
+    String getXY() {
+        return "(" + x + "," + y + ")";
+    } // end of getXY
+
+} // end of class Point
+
+// A Circle is a Shape 이므로 Circle은 Shape를 상속받는다.
+// A Circle has a Point 이므로 Circle은 Point를 포함한다.
+class Circle extends Shape {
+
+    // Point 클래스 타입의 변수 center를 선언한다.
+    // center에는 변수 x, y, 그리고 getXY 메서드를 포함한다.
+    Point center;
+    int r;
+
+    // Circle의 생성자.
+    // parameter가 없으면 오버로딩된 Circle(new Point(0,0), 100)을 호출하는데,
+    // new Point(0,0)은 x와 y를 0으로 초기화하는 생성자를 호출한다.
+    // 여기서 new Point()로 써도 무방하다.
+    Circle() {
+        //
+        this(new Point(0, 0), 100);
+    } // end of constructor Circle
+
+    Circle(Point center, int r) {
+        // Point 클래스 타입으로 선언된 변수의 center의 center 변수 값에 parameter로 들어온 center를
+        // 넣는다.
+        // 즉, Point center = new Point(0,0)이고, 이것은 Point 생성자를 호출해서 x와 y의 값에 0을
+        // 넣는다.
+        this.center = center;
+        this.r = r;
+    } // end of constructor Circle
+
+    void draw() {
+        System.out.printf("[center=(%d, %d), r=%d, color=%s]%n", center.x,
+                center.y, r, color);
+
+    } // end of draw
+
+} // end of class Circle
+
+// A Triangle is a Shape이므로 Triangle은 Shape를 상속받는다.
+// A Triangle has a Point이므로, Triangle은 Point를 포함한다.
+class Triangle extends Shape {
+
+    // Point 클래스 타입의 배열 p를 선언하고, p는 p[0], p[1], p[2]를 가지고 있다.
+    Point[] p = new Point[3];
+
+    Triangle(Point[] p) {
+        // Point 클래스 타입의 배열 p가 parameter로 들어오면, 그 p를 Triangle 클래스가 가지고 있는 Point
+        // 클래스 배열의 주소값에 넣는다.
+        // 즉, parameter의 주소값을 p에 넣어서 동일한 주소값으로 만드는 것이다.
+        this.p = p;
+
+    } // end of constructor Triangle
+
+    void draw() {
+        System.out.printf("[p1=%s, p2=%s, [p3=%s, color=%s]%n", p[0].getXY(),
+                p[1].getXY(), p[2].getXY(), color);
+
+    } // end of draw
+
+} // end of class Triangle
+
+
+
+7-3
+
+public class DeckTest {
+
+    public static void main(String[] args) {
+        // 클래스 Deck 타입의 인스턴스 d를 선언
+        // 인스턴스 d는 CARD_NUM, cardArr[], pick(), shuffle()을 가진다.
+        Deck d = new Deck();
+
+        // 클래스 Card 타입의 인스턴스 c를 선언
+        // 인스턴스 c는 KIND_MAX 등의 상수와 kind, number, toString()을 가진다.
+        // Card c = new Card(); c = d.pick(0)
+        // Card 생성자가 호출되면, 그 카드를 SPADE 1로 초기화를 한다.
+        // d.pick(0)는 인스턴스 d에서 메서드 pick을 호출한다 -> pick의 인덱스 0를 가져온다.
+        // 즉, pick의 첫번째 카드의 정보를 인스턴스 c에 넣는다.
+        Card c = d.pick(0);
+        System.out.println(c);
+
+        d.shuffle(); // 인스턴스 d의 카드를 섞는다.
+        c = d.pick(0); // 인스턴스 c에 첫번째 카드의 정보를 넣는다.
+        System.out.println(c);
+
+    } // end of main
+
+} // end of class DeckTest
+
+class Deck {
+    final int CARD_NUM = 52;
+    Card cardArr[] = new Card[CARD_NUM];
+
+    Deck() {
+        int i = 0;
+        for (int k = Card.KIND_MAX; k > 0; k--) {
+            for (int n = 0; n < Card.NUM_MAX; n++) {
+                // cardArr[0]을 하고 1을 증가시킨다.
+                // cardArr[0] = new Card(4, 1) -> kind = 4, number = 1로 초기화
+                // 즉, 0번 카드는 1 SPADE로 고정하고, 1번 카드는 new (Card(4, 2) 즉 2 SPADE
+                cardArr[i++] = new Card(k, n + 1);
+            } // end of for n
+        } // end of for k
+    } // end of constructor Deck
+
+    // 랜덤으로 아무 카드의 인덱스를 선택한다.
+    Card pick() {
+        int index = (int) (Math.random() * CARD_NUM);
+        return pick(index);
+    } // end of pick
+
+    // Card 타입의 pick 메서드를 오버로딩한 것
+    // parameter로 받은 index에 해당하는 card 값을 리턴한다.
+    Card pick(int index) {
+        return cardArr[index];
+    } // end of pick
+
+    void shuffle() {
+        for (int i = 0; i < cardArr.length; i++) {
+            int r = (int) (Math.random() * CARD_NUM);
+            Card temp = cardArr[i];
+            cardArr[i] = cardArr[r];
+            cardArr[r] = temp;
+        } // end of for i
+    } // end of shuffle
+} // end of class Deck
+
+class Card {
+    static final int KIND_MAX = 4;
+    static final int NUM_MAX = 13;
+    static final int SPADE = 4;
+    static final int DIAMOND = 3;
+    static final int HEART = 2;
+    static final int CLOVER = 1;
+    int kind;
+    int number;
+
+    Card() {
+        this(SPADE, 1);
+    } // end of constructor Card
+
+    // Overloaded constructor
+    Card(int kind, int number) {
+        this.kind = kind;
+        this.number = number;
+    } // end of constructor Card
+
+    public String toString() {
+        String[] kinds = { "", "CLOVER", "HEART", "DIAMOND", "SPADE" };
+        String numbers = "0123456789XJQK";
+        return "kind: " + kinds[this.kind] + ", number: "
+                + numbers.charAt(this.number);
+    } // end of toString
+
+} // end of class Card
+
+7-12
+// final modifier의 경우 생성자에서 초기화를 할 수 있다.
+// 생성자에서 parameter를 받고 final 변수를 초기화 하는데,
+// 이 기능을 활용하면 각 인스턴스마다 final이 붙은 멤버변수가
+// 다른 값을 갖도록 하는 것이 가능하다.
+
+package Chap07;
+
+class Card2 {
+    final int NUMBER;
+    final String KIND;
+    static int width = 100;
+    static int height = 250;
+
+    // 아래의 생성자에서 final 변수의 값을 초기화 한다.
+    Card2(String kind, int num) {
+        KIND = kind;
+        NUMBER = num;
+    }
+
+    Card2() {
+        this("HEART", 1);
+    }
+
+    public String toString() {
+        return KIND + " " + NUMBER;
+    }
+
+} // end of class Card
+
+public class FinalCardTest {
+
+    public static void main(String[] args) {
+        Card2 c = new Card2("HEART", 10);
+        System.out.println(c.KIND);
+        System.out.println(c.NUMBER);
+        System.out.println(c);
+
+    } // end of main
+
+} // end of class FinalCardTest
+
+7-14
+// 생성자에 private을 걸어서 외부에서 인스턴스를 못만들게 하는 방법
+// 이 경우, 같은 클래스에서만 인스턴스를 만들 수 있다.
+
+package Chap07;
+
+final class Singleton {
+
+    // 생성자가 private이므로 같은 클래스인 Singleton에서만 인스턴스를 만들 수 있다.
+    // 즉, 아래와 같이 여기서만 만들어야 한다.
+    // static으로 선언하는 이유는 아래의 getInstance 메서드가 static이기 때문이다.
+    private static Singleton s = new Singleton();
+
+    // 생성자를 private으로 선언했다.
+    // 즉, 같은 클래스 내에서만 접근이 가능하다.
+    private Singleton() {
+
+    }
+
+    // 생성자에 private을 걸어서 외부에서는 직접 인스턴스를 생성하지 못한다.
+    // 따라서 외부에서는 인스턴스를 생성하지 않고도 호출할 수 있어야 하므로 static이어야 한다.
+    // 즉, 생성자가 클래스 메서드가 되어야 메모리에 미리 로딩되고 공통 메서드가 된다.
+    // getInstance 메서드의 리턴 타입이 Singleton이다.
+    public static Singleton getInstance() {
+        // 안드로이드 앱의 경우 GC가 수행되서 static 영역의 데이터가 자주 날라간다.
+        // 이때 null인 경우가 있어서 다시 객체를 생성해서 리턴하는 부분이다.
+        if (s == null) {
+            s = new Singleton();
+        }
+        return s;
+    }
+}
+
+public class SingletonTest {
+
+    public static void main(String[] args) {
+        // Singleton s = new Singleton() 이렇게 인스턴스를 생성하면 에러가 난다.
+        // 아래와 같이 메서드를 통해서 인스턴스를 만들어야 한다.
+        Singleton s = Singleton.getInstance();
+
+    }
+
+}
+
+
+7-15
+
+// 다형성의 형변환
+// 형변환은 참조변수의 타입을 변환하는 것이지 인스턴스를 변환하는 것은 아니기 때문에
+// 참조변수의 형변환은 인스턴스에 아무런 영향을 미치지 않는다.
+// 단지 참조변수의 형변환을 통해서, 참조하고 있는 인스턴스에서 사용할 수 있는 멤버의 범위(개수)를 조절하는 것 뿐이다.
+
+package Chap07;
+
+class Car {
+    String color;
+    int door;
+
+    void drive() {
+        System.out.println("Drive, Brrrr~");
+    }
+
+    void stop() {
+        System.out.println("stop!!");
+    }
+
+} // end of class Car
+
+class FireEngine extends Car {
+    void water() {
+        System.out.println("water!!!");
+    }
+
+} // end of class FireEngine
+
+public class CastingTest1 {
+
+    public static void main(String[] args) {
+        // Car 타입의 참조변수 car 선언
+        Car car = null;
+
+        // FireEngine 타입의 참조변수 fe를 선언
+        // FireEngine 인스턴스를 생성하고 그 주소를 fe에 할당
+        FireEngine fe = new FireEngine();
+
+        // FireEngine 타입의 참조변수 fe2를 선언
+        FireEngine fe2 = null;
+
+        fe.water();
+
+        // Car 타입의 참조변수 car에 FireEngine 타입의 참조변수 fe의 주소값을 할당
+        // FireEngine은 Car의 자손이므로 car=(Car)fe 에서처럼 형변환 생략된 형태
+        // Car 타입은 실체, FireEngine은 껍데기 즉, FireEngine 중에서 Car 부분만 취하는 형태이다.
+        car = fe;
+//        car.water(); 컴파일 에러. Car 타입의 참조변수로는 water()를 호출할 수 없다.
+
+        // FireEngine은 실체, Car는 껍데기. 즉, 껍데기보다 실체가 크므로 형변환 생략 불가
+        fe2 = (FireEngine) car;
+        fe2.water();
+
+    }
+
+}
+
+7-21
+package Chap07;
+
+public class PolyArgumentTest {
+
+    public static void main(String[] args) {
+        Buyer b = new Buyer();
+
+        // Tv2 t = new Tv2()
+        // b.buy(t)
+        b.buy(new Tv2());
+        b.buy(new Computer());
+        System.out.println("현재 남은 돈은 " + b.money + "만원입니다.");
+        System.out.println("현재 보너스 점수는 " + b.bonusPoint + "점입니다.");
+        b.buy(new Tv2());
+        System.out.println("현재 남은 돈은 " + b.money + "만원입니다.");
+        System.out.println("현재 보너스 점수는 " + b.bonusPoint + "점입니다.");
+    }
+}
+
+class Product {
+    int price;
+    int bonusPoint;
+
+    Product(int price) {
+        this.price = price;
+        bonusPoint = (int) (price / 10.0);
+    }
+} // end of class Product
+
+class Tv2 extends Product {
+    Tv2() {
+        // 조상 클래스인 Product의 생성자 Product(int price)를 호출한다.
+        super(100);
+    } // end of constructor Tv2
+
+    public String toString() {
+        return "Tv";
+    }
+
+} // end of class Tv2
+
+class Computer extends Product {
+    Computer() {
+        super(200);
+    }
+
+    public String toString() {
+        return "Computer";
+    }
+} // end of class Computer
+
+class Buyer {
+    int money = 1000;
+    int bonusPoint = 0;
+
+    // Product 클래스 타입의 매개변수를 받는다.
+    // Tv 클래스 타입의 매개변수가 들어올 경우, p.price는 Tv 클래스에 없으므로 Product 클래스의 price가 된다.
+    void buy(Product p) {
+        if (money < p.price) {
+            System.out.println("잔액이 부족하여 물건을 살 수 없습니다.");
+            return;
+        } // end of if money
+        money -= p.price;
+        bonusPoint += p.bonusPoint;
+        System.out.println(p + "을/를 구입하셨습니다.");
+
+    } // end of method buy
+
+} // end of class Buyer
+
+7-22
+// 객체배열로 물건 구매하는 클래스
+
+package Chap07;
+
+class Product4 {
+    int price;
+    int bonusPoint;
+
+    Product4(int price) {
+        this.price = price;
+        bonusPoint = (int) (price / 10.0);
+    } // end of constructor Product4
+
+    Product4() {
+    }
+} // end of Product4
+
+class Tv4 extends Product4 {
+    Tv4() {
+        super(100);
+    }
+
+    public String toString() {
+        return "Tv";
+    }
+} // end of class Tv4
+
+class Computer4 extends Product4 {
+    Computer4() {
+        super(200);
+    }
+
+    public String toString() {
+        return "Computer";
+    }
+} // end of class Computer4
+
+class Audio4 extends Product4 {
+
+    Audio4() {
+        super(50);
+    }
+
+    public String toString() {
+        return "Audio";
+    }
+} // end of class Audio4
+
+class Buyer4 {
+    int money = 1000;
+    int bonusPoint = 0;
+
+    // Product4 클래스 타입의 배열 item을 선언
+    Product4[] item = new Product4[10];
+    int i = 0;
+
+    void buy(Product4 p) {
+        if (money < p.price) {
+            System.out.println("잔액이 부족하여 물건을 살 수 없습니다.");
+            return;
+        } // end of if money
+        money -= p.price;
+        bonusPoint += p.bonusPoint;
+        // p의 주소값을 item 배열에 넣고 인덱스를 1 증가시킨다.
+        item[i++] = p;
+        // p를 호출하면 해당 클래스의 toString() 메서드를 호출한다.
+        System.out.println(p + "을/를 구입하셨습니다.");
+
+    } // end of method buy
+
+    void summary() {
+        int sum = 0;
+        String itemList = "";
+
+        for (int i = 0; i < item.length; i++) {
+            if (item[i] == null)
+                break;
+            sum += item[i].price;
+            // 응용할 만한 로직
+            itemList += (i == 0) ? "" + item[i] : ", " + item[i];
+
+        } // end of for i
+        System.out.println("구입하신 물품의 총금액은 " + sum + "만원입니다.");
+        System.out.println("구입하신 제품은" + itemList + "입니다.");
+
+    } // end of method summary
+
+} // end of class Buyer4
+
+public class PolyArgumentTest2 {
+
+    public static void main(String[] args) {
+
+        Buyer4 b = new Buyer4();
+        b.buy(new Tv4());
+        b.buy(new Computer4());
+        b.buy(new Audio4());
+        b.summary();
+    } // end of main
+
+} // end of class PolyArgumentTest2
+
+7-23
+
+// 배열의 동적할당 적용하고 parameter를 다형성(polymorphism)으로 사용
+
+package Chap07;
+
+import java.util.Vector;
+
+class Product5 {
+    int price;
+    int bonusPoint;
+
+    Product5(int price) {
+        this.price = price;
+        bonusPoint = (int) (price / 10.0);
+    } // end of constructor Product5
+
+    Product5() {
+        price = 0;
+        bonusPoint = 0;
+    } // end of constructor Product5
+} // end of class Product5
+
+class Tv5 extends Product5 {
+    Tv5() {
+        super(100);
+    }
+
+    public String toString() {
+        return "Tv";
+    }
+} // end of class Tv
+
+class Computer5 extends Product5 {
+    Computer5() {
+        super(200);
+    }
+
+    public String toString() {
+        return "Computer";
+    }
+} // end of class Computer5
+
+class Audio5 extends Product5 {
+    Audio5() {
+        super(50);
+    }
+
+    public String toString() {
+        return "Audio";
+    }
+} // end of class Audio
+
+class Buyer5 {
+    int money = 1000;
+    int bonusPoint = 0;
+
+    // 구입한 제품을 저장하는데 사용될 Vector 객체 (동적 할당)
+    Vector item = new Vector();
+
+    // parameter를 부모 클래스인 Product5 타입으로 받는다.
+    // 왜냐하면, parameter에는 Product5의 자손 클래스들이 들어오기 때문이다.
+    void buy(Product5 p) {
+        if (money < p.price) {
+            System.out.println("잔액이 부족하여 물건을 살 수 없습니다.");
+            return;
+        } // end of if money
+        money -= p.price;
+        bonusPoint += p.bonusPoint;
+        item.add(p);
+        System.out.println(p + "을/를 구입하셨습니다.");
+    } // end of method buy
+
+    void refund(Product5 p) {
+        if (item.remove(p)) {
+            money += p.price;
+            bonusPoint -= p.bonusPoint;
+            System.out.println(p + "을/를 반품하셨습니다.");
+        } else {
+            System.out.println("구입하신 제품 중 해당 제품이 없습니다.");
+        } // end of if item
+    } // end of method refund
+
+    void summary() {
+        int sum = 0;
+        String itemList = "";
+        if (item.isEmpty()) {
+            System.out.println("구입하신 제품이 없습니다.");
+            return;
+        } // end of if item
+
+        for (int i = 0; i < item.size(); i++) {
+            // Vector의 i번째에 있는 객체를 얻어온다.
+            // Product5 클래스 타입의 변수 p에 item에서 얻어온 i번째 객체의 주소값을 넣어준다.
+            // 이때 item에서 얻어온 객체는 자손 클래스 타입이므로 이를 다시 Product5 형태로 형변환을 해준다.
+            Product5 p = (Product5) item.get(i);
+            sum += p.price;
+            itemList += (i == 0) ? "" + p : ", " + p;
+        } // end of for i
+        System.out.println("구입하신 물품의 총급액은 " + sum + "만원입니다.");
+        System.out.println("구입하신 제품은 " + itemList + "입니다.");
+    } // end of method summary
+} // end of class Buyer5
+
+public class PolyArgumentTest3 {
+
+    public static void main(String[] args) {
+        Buyer5 b = new Buyer5();
+        Tv5 tv = new Tv5();
+        Computer5 com = new Computer5();
+        Audio5 audio = new Audio5();
+
+        b.buy(tv);
+        b.buy(com);
+        b.buy(audio);
+        b.summary();
+        System.out.println();
+        b.refund(com);
+        b.summary();
+    }
+}
+
+
+7-24
+
+package Chap07;
+
+public class FighterTest {
+
+    public static void main(String[] args) {
+        Fighter f = new Fighter();
+
+        if (f instanceof Unit)
+            System.out.println("f는 Unit 클래스의 자손입니다.");
+
+        if (f instanceof Fightable)
+            System.out.println("f는 Fightable 인터페이스를 구현했습니다.");
+
+        if (f instanceof Movable)
+            System.out.println("f는 Movable 인터페이스를 구현했습니다.");
+
+        if (f instanceof Attackable)
+            System.out.println("f는 Attackable 인터페이스를 구현했습니다.");
+
+        if (f instanceof Object)
+            System.out.println("f는 Object 클래스의 자손입니다.");
+
+    } // end of main
+} // end of class FighterTest
+
+// Fighter 클래스는 Unit 클래스를 상속하고, Fightable 인터페이스를 구현한다.
+// 클래스는 클래스, 인터페이스 둘다로부터 상속이 가능하지만, 인터페이스는 인터페이스로부터만 상속이 가능하다.
+// 하지만, 인터페이스는 다중 상속이 가능하다는 장점이 있다.
+class Fighter extends Unit implements Fightable {
+    // Fightable에서는 Movable 및 Attackable을 상속받는다.
+    // 따라서 여기서 구현하는 메서드는 아래와 같이 오버라이딩을 해야하며,
+    // access modifier는 조상(ancestor)의 access modifier와 같거나 넓은 범위로 해야한다.
+    // 그래서 public으로 해야한다.
+    public void move(int x, int y) {
+
+    }
+
+    public void attack(Unit u) {
+    }
+}
+
+class Unit {
+    int currentHP;
+    int x;
+    int y;
+}
+
+// Fightable 인터페이스는 Movable과 Attackable 인터페이스를 상속한다.
+interface Fightable extends Movable, Attackable {
+}
+
+interface Movable {
+    // 인터페이스 이므로 여기서 접근제어자(access modifier)인 public abstract가 생략되었다.
+    void move(int x, int y);
+}
+
+interface Attackable {
+    void attack(Unit u);
+}
+
+7-25
+// 분산환경 프로그래밍에서 활용되는 예시
+// 사용자의 컴퓨터에 설치된 프로그램을 변경하지 않고, 서버측의 변경 만으로도 사용자가 새로 개정된
+// 프로그램을 사용하는 것이 가능하다.
+// 인터페이스를 구현하는 부분만 업그레이드를 하고 서버측에서 getParser 메서드에서 리턴값만 바꿔주면 되기 때문이다.
+
+package Chap07;
+
+// 인터페이스 선언
+interface Parseable {
+    // 추상 메서드 선언
+    public abstract void parse(String fileName);
+}
+
+class ParserManager {
+
+    // Parseable 타입으로 반환하는 getParser 메서드 정의
+    // 여기서 리턴타입이 Parseable 인터페이스라는 것의 의미는 이 메서드가 Parseable에서 선언한 다양한 메서드들에 대해
+    // 실제로 구현을 한 클래스의 객체를 반환한다는 의미이다. 즉, XMLParser 혹은 HTMLParser가 실제로 구현을 했고,
+    // 이것들이 구현한 객체를 리턴값으로 반환하다는 뜻이다.
+
+    public static Parseable getParser(String type) {
+        if (type.equals("XML")) {
+            return new XMLParser();
+        } else {
+            // 아래는 return new HTMLParser()와 동일하다.
+            Parseable p = new HTMLParser();
+            return p;
+        } // end of if type
+
+    } // end of method getParser
+
+} // end of class ParserManager
+
+// 클래스 XMLParser는 Parseable을 구현한다.
+class XMLParser implements Parseable {
+    public void parse(String fileName) {
+        System.out.println(fileName + "- XML parsing completed.");
+    } // end of method parse
+
+} // end of class XMLParser
+
+// 클래스 HTMLParser는 Parseable을 구현한다.
+class HTMLParser implements Parseable {
+    public void parse(String fileName) {
+        System.out.println(fileName + "- HTML parsing completed.");
+    } // end of method parse
+
+} // end of class HTMLParser
+
+public class ParseTest {
+
+    public static void main(String[] args) {
+        // Parseable 타입의 참조변수 parser를 선언하고, 이 값에 ParserManager 클래스의 getParser가
+        // 주는 리턴값을 넣는다. 즉, 이 리턴값은 인터페이스가 구현된 것의 결과값을 말한다.
+        Parseable parser = ParserManager.getParser("XML");
+        parser.parse("document.xml");
+        parser = ParserManager.getParser("HTML");
+        parser.parse("document2.html");
+
+    } // end of main
+
+} // end of class ParseTest
+
+7-28
+
+// 인터페이스의 중간 역할
+// 인터페이스 I가 중간에 있기 때문에 호출부는 구현부를 신경쓰지 않아도 된다.
+
+package Chap07;
+
+// 클래스 A1의 메서드 autoPlay는 인터페이스 타입의 참조변수를 parameter로 받는다. 
+class A1 {
+    void autoPlay(I i) {
+        i.play();
+    }
+}
+
+interface I {
+    public abstract void play();
+}
+
+// 클래스 B1은 인터페이스 I를 구현한다.
+class B1 implements I {
+    public void play() {
+        System.out.println("play in B class");
+    }
+}
+
+// 클래스 C1은 인터페이스 I를 구현한다.
+class C1 implements I {
+    public void play() {
+        System.out.println("play in C class");
+    }
+}
+
+public class InterfaceTest2 {
+
+    public static void main(String[] args) {
+        // A1 타입의 참조변수 a를 선언하고, a에는 A1 객체의 주소값을 넣는다.
+        A1 a = new A1();
+
+        // A1 클래스의 autoPlay 메서드를 호출하는데, 여기에 B1 객체의 주소값을 parameter로 넣는다.
+        // B1은 인터페이스 I를 구현했으므로, B1의 메서드가 호출된다.
+        a.autoPlay(new B1());
+        a.autoPlay(new C1());
+    }
+
+}
+
+7-37
+package Chap07;
+
+import java.awt.Button;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class InnerEx7 {
+
+    public static void main(String[] args) {
+        Button b = new Button("Start");
+
+        // 버튼 타입의 참조변수 b에 정의된 addActionListener 함수를 호출한다.
+        // parameter로는 EventHandler 타입의 참조변수를 생성해서 그 주소값을 넣는다.
+        b.addActionListener(new EventHandler());
+    }
+}
+
+// EventHandler 클래스는 ActionListener를 구현한 것이다.
+class EventHandler implements ActionListener {
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("ActionEvent occurred!!!");
+    }
+}
+
+7-38
+
+package Chap07;
+
+import java.awt.Button;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class InnerEx8 {
+
+    public static void main(String[] args) {
+
+        Button b = new Button("Start");
+
+        b.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("ActionEvent occurred!!!");
+            } // end of method actionPerformed
+        }); // end of anonymous class
+
+    } // end of main
+} // end of class InnerEx8
+
+
+문제 7-1, 7-2
+// 섯다카드 20장을 담는 SutdaCard 배열 초기화
+
+// 섯다카드 20장을 담는 SutdaCard 배열 초기화
+
+package Chap07.Exercise;
+
+class SutdaDeck {
+    final int CARD_NUM = 20;
+    // SutdaCard 클래스 타입의 참조변수 배열 cards를 선언한다.
+    // 참조변수 cards의 값에 SutdaCard[20]의 주소값을 넣는다.
+    // 즉, 여기서는 클래스 배열을 선언하기만 한 것이다.
+    // 객체도 생성을 해줘야하는데, 이는 생성자에서 해줘도 된다.
+    SutdaCard[] cards = new SutdaCard[CARD_NUM];
+
+    SutdaDeck() {
+        // iteration을 돌면서 index 0부터 20까지 값을 할당한다.
+        // 예를 들어, 시작은 참조변수 cards[0]의 값에 SutdaCard(1, true)의 주소값을 넣는다.
+        // 이때, SutdaCard 클래스의 생성자를 호출하게 된다.
+
+        // 아래는 내가 작성한 코드
+        /*
+         * int num = 1; boolean isKwang; for (int i = 0; i < CARD_NUM; i++) {
+         * isKwang = false; if (num >= 11) { num = 1; } // end of if num
+         * 
+         * if (i == 0 || i == 2 || i == 7) { isKwang = true; } // end of if i
+         * 
+         * cards[i] = new SutdaCard(num++, isKwang); } // end of for i
+         */
+
+        // 아래는 모범 답안
+        for (int i = 0; i < cards.length; i++) {
+            // i의 값을 1부터 10까지 되돌려가면서 반복
+            int num = i % 10 + 1;
+
+            // true/false를 이렇게 판단할 수도 있음.
+            // AND가 OR보다 우선순위가 높기 때문에 괄호를 꼭 넣어야 한다.
+            boolean isKwang = (i < 10) && (num == 1 || num == 3 || num == 8);
+            cards[i] = new SutdaCard(num, isKwang);
+
+        } // end of for i
+
+    } // end of constructor SutdaDeck
+
+    void shuffle() {
+
+        // 아래는 내가 작성한 코드
+        /*
+         * SutdaCard tmp = new SutdaCard(); for (int i = 0; i < CARD_NUM; i++) {
+         * // 0.0 <= x < 1.0 // 0 <= x < 20 int rnd = (int) (Math.random() *
+         * 20); tmp.num = cards[i].num; tmp.isKwang = cards[i].isKwang;
+         * cards[i].num = cards[rnd].num; cards[i].isKwang = cards[rnd].isKwang;
+         * cards[rnd].num = tmp.num; cards[rnd].isKwang = tmp.isKwang; } // end
+         * of for i
+         */
+
+        // 아래는 모범 답안
+        for (int i = 0; i < cards.length; i++) {
+            int j = (int) (Math.random() * cards.length);
+            SutdaCard tmp = cards[i];
+            cards[i] = cards[j];
+            cards[j] = tmp;
+
+        } // end of for i
+
+    }
+
+    SutdaCard pick(int index) {
+        // index의 유효성 검사는 꼭 해야한다. 나는 빼먹었다.
+        if (index < 0 || index >= CARD_NUM)
+            return null;
+        return cards[index];
+    }
+
+    SutdaCard pick() {
+        return cards[(int) (Math.random() * cards.length)];
+    }
+
+} // end of class SutdaDeck
+
+class SutdaCard {
+    int num;
+    boolean isKwang;
+
+    SutdaCard() {
+        this(1, true);
+    }
+
+    SutdaCard(int num, boolean isKwang) {
+        this.num = num;
+        this.isKwang = isKwang;
+    }
+
+    public String toString() {
+        return num + (isKwang ? "K" : "");
+    }
+
+} // end of class SutdaCard
+
+public class Exercise7_1 {
+
+    public static void main(String[] args) {
+        SutdaDeck deck = new SutdaDeck();
+
+        System.out.println(deck.pick(0));
+        System.out.println(deck.pick());
+        deck.shuffle();
+
+        for (int i = 0; i < deck.cards.length; i++) {
+            System.out.print(deck.cards[i] + ",");
+        } // end of for i
+
+        System.out.println();
+        System.out.println(deck.pick(0));
+
+    } // end of main
+
+} // end of class Exercise7_1
+
+
+7-7
+
+// main method의 호출 순서
+
+package Chap07.Exercise;
+
+class Parent {
+    int x = 100;
+
+    Parent() {
+        this(200);
+    } // end of constructor Parent
+
+    Parent(int x) {
+        this.x = x;
+    } // end of constructor Parent
+
+    void getX() {
+        System.out.println("X, This is Parent's method.");
+    } // end of method getX
+
+    void getY() {
+        System.out.println("Y, This is Parent's method.");
+    } // end of method getX
+
+} // end of class Parent
+
+class Child extends Parent {
+
+    int x = 3000;
+
+    Child() {
+        this(1000);
+    } // end of constructor Child
+
+    Child(int x) {
+        this.x = x;
+    } // end of constructor Child
+
+    void getX() {
+        System.out.println("X, This is Child's method.");
+    } // end of overrode method of getX
+
+    void getZ() {
+        System.out.println(super.x + " is Parent's value of x.");
+        System.out.println(this.x + " is Child's value of x.");
+    } // end of method getZ
+
+} // end of Child
+
+public class Exercise7_07 {
+
+    public static void main(String[] args) {
+        // Child 타입 참조변수 c에 Child 인스턴스를 생성하고 그 주소값을 넣는다.
+        // Child 인스턴스를 생성하면, 자동으로 생성자 Child()를 호출한다.
+        // Child()는 overloading된 Child(int x)를 호출한다.
+        // 컴파일러는 생성자의 첫 줄에 다른 생성자를 호출하지 않으면, 조상의 기본 생성자를 호출하는 코드인 super()를 넣는다.
+        // 따라서 Child(int x)에는 super()가 들어가고, Parent()를 호출하게 된다.
+        Child c = new Child();
+        c.getX(); // 자손에 override 된 메서드는 자손의 메서드를 호출한다.
+        c.getY(); // 조상에만 있는 메서드는 조상의 메서드를 호출한다.
+        c.getZ();
+
+    }
+}
+
+연습문제 7-19
+
+package Chap07.Exercise;
+
+public class Exercise7_19 {
+
+    public static void main(String[] args) {
+        Buyer b = new Buyer();
+        b.buy(new Tv());
+        b.buy(new Computer());
+        b.buy(new Tv());
+        b.buy(new Audio());
+        b.buy(new Computer());
+        b.buy(new Computer());
+        b.buy(new Computer());
+
+        b.summary();
+    } // end of main
+
+} // end of class
+
+class Buyer {
+    int money = 1000;
+    Product[] cart = new Product[3];
+    int i = 0;
+
+    void buy(Product p) {
+        if (money < p.price) {
+            System.out.println("잔액이 부족하여 " + p + "을/를 살 수 없습니다.");
+            return;
+        } // end of if money
+
+        money -= p.price;
+        add(p);
+
+    } // end of method buy
+
+    void add(Product p) {
+        if (i >= cart.length) {
+            Product[] newCart = new Product[cart.length * 2];
+            System.arraycopy(cart, 0, newCart, 0, cart.length);
+            cart = newCart;
+        } // end of if i
+
+        cart[i++] = p;
+
+    } // end of method add
+
+    void summary() {
+        String list = "";
+        int sum = 0;
+        for (int i = 0; i < cart.length; i++) {
+            if (cart[i] == null) {
+                break;
+            } // end of if cart
+            list += cart[i] + ", ";
+            sum += cart[i].price;
+        } // end of for j
+        System.out.println("구입한 물건: " + list);
+        System.out.println("사용한 금액: " + sum);
+        System.out.println("남은 금액: " + money);
+
+    } // end of method summary
+
+} // end of class Buyer
+
+class Product {
+    int price;
+
+    Product(int price) {
+        this.price = price;
+    } // end of constructor
+
+} // end of class Product
+
+class Tv extends Product {
+    Tv() {
+        super(100);
+    } // end of constructor
+
+    public String toString() {
+        return "Tv";
+    } // end of method
+
+} // end of class Tv
+
+class Computer extends Product {
+    Computer() {
+        super(200);
+    } // end of constructor
+
+    public String toString() {
+        return "Computer";
+    } // end of method
+
+} // end of class Computer
+
+class Audio extends Product {
+    Audio() {
+        super(50);
+    } // end of constructor
+
+    public String toString() {
+        return "Audio";
+    } // end of method
+
+}
+// end of class Audio
+
+연습문제 7-20
+
+package Chap07.Exercise;
+
+public class Exercise7_20 {
+
+    public static void main(String[] args) {
+        // Parent2 클래스 타입의 참조변수 p를 선언한다.
+        // Child2 클래스의 인스턴스를 생성하고, 그 생성된 주소값을 p에 대입한다.
+        Parent2 p = new Child2();
+
+        // Child2 클래스 타입의 참조변수 c를 선언한다.
+        // Child2 클래스의 인스턴스를 생성하고, 그 생성된 주소값을 c에 대입한다.
+        Child2 c = new Child2();
+
+        // 참조변수 p는 Parent2 클래스 타입이므로, Parent2에 있는 멤버변수를 참조하여 100을 리턴한다.
+        System.out.println("p.x = " + p.x);
+        // 메서드는 자손에서 오버라이딩이 되어있기 때문에, 자손의 method를 호출한다.
+        p.method();
+
+        // 참조변수 c는 Child2 클래스 타입이므로, Child2에 있는 멤버변수를 참조하여 200을 리턴한다.
+        // 메서드는 자손에서 오버라이딩이 되어있기 때문에, 자손의 method를 호출한다.
+        System.out.println("c.x = " + c.x);
+        c.method();
+    } // end of main
+
+} // end of class
+
+class Parent2 {
+    int x = 100;
+
+    void method() {
+        System.out.println("Parent Method");
+    } // end of method
+
+} // end of class Parent
+
+class Child2 extends Parent2 {
+    // 조상 클래스에 선언된 멤버변수와 같은 이름의 인스턴스 변수가 자손 클래스에 정의되어 있다.
+    // 조상 타입의 참조변수(위에서는 p)로 자손의 인스턴스를 참조하는 경우와
+    // 자손 타입의 참조변수(위에서는 c)로 자손의 인스턴스를 참조하는 경우는 서로 다른 결과를 갖는다.
+    // 즉, 참조변수의 타입에 따라 멤버변수는 호출되는 것이 달라진다.
+
+    // 메서드는 자손에서 오버라이딩이 된 경우, 무조건 오버라이딩 된 메서드만 호출한다.
+    int x = 200;
+
+    void method() {
+        System.out.println("Child Method");
+    } // end of method
+
+} // end of class Child
+
+// 실행 결과
+// p.x = 100
+// Child Method
+// c.x = 200
+// Child Method
+
+
+연습문제 7-22
+
+package Chap07.Exercise;
+
+class Circle extends Shape {
+    double r;
+
+    Circle(double r) {
+        this(new Point(0, 0), r);
+    } // end of constructor
+
+    Circle(Point p, double r) {
+        // 조상의 멤버를 초기화하기 위해서는 parameter로 받아야 한다.
+        super(p); // 조상의 멤버는 조상의 생성자가 초기화하도록 한다.
+        this.r = r; // 자신의 멤버는 자신이 직접 초기화 한다.
+    } // end of
+
+    double calcArea() {
+        return Math.PI * r * r;
+    } // end of calcArea
+} // end of class
+
+class Rectangle extends Shape {
+    double width;
+    double height;
+
+    Rectangle(double width, double height) {
+        this(new Point(0, 0), width, height);
+    } // end of constructor
+
+    Rectangle(Point p, double width, double height) {
+        super(p); // 조상의 멤버는 조상의 생성자가 초기화하도록 한다.
+        this.width = width; // 자신의 멤버는 자신이 직접 초기화 한다.
+        this.height = height;
+    } // end of constructor
+
+    double calcArea() {
+        return width * height;
+    } // end of calcArea
+
+    boolean isSquare() {
+//        return ((width == height) && (width * height != 0)) ? true : false;
+        return ((width == height) && (width * height != 0));
+    } // end of isSquare
+
+} // end of class
+
+abstract class Shape {
+    Point p;
+
+    Shape() {
+        this(new Point(0, 0));
+    } // end of constructor
+
+    Shape(Point p) {
+        this.p = p;
+    } // end of constructor
+
+    abstract double calcArea();
+
+    Point getPosition() {
+        return p;
+    } // end of method
+
+    void setPosition(Point p) {
+        this.p = p;
+    } // end of method
+
+} // end of class
+
+class Point {
+    int x;
+    int y;
+
+    Point() {
+        this(0, 0);
+    } // end of constructor
+
+    Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    } // end of constructor
+
+    public String toString() {
+        return "[" + x + "," + y + "]";
+    } // end of toString
+
+} // end of class Point
+
+public class Exercise7_22 {
+    static double totalArea = 0;
+
+    static double sumArea(Shape[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+//            if (arr[i] == null) {
+//                break;
+//            } // end of if arr
+            totalArea += arr[i].calcArea();
+        } // end of for i
+        return totalArea;
+    } // end of method sumArea
+
+    public static void main(String[] args) {
+        Shape[] arr = { new Circle(5.0), new Rectangle(3, 4), new Circle(1) };
+        System.out.println("면적의 합: " + sumArea(arr));
+    }
+
+}
+
