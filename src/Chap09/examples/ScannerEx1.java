@@ -1,4 +1,5 @@
 package Chap09.examples;
+
 import java.util.Scanner;
 
 public class ScannerEx1 {
@@ -29,7 +30,6 @@ public class ScannerEx1 {
             } // end of if
 
         } // end of while
-//        s.close();
 
     }
 
