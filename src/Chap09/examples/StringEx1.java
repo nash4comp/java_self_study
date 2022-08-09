@@ -24,17 +24,15 @@ public class StringEx1 {
 
         System.out.println("str3 == str4 ? " + (str3 == str4));
         System.out.println("str3.equals(str4) ? " + str3.equals(str4));
+
+        System.out.println("ABC" == "ABC");
+        String str5 = null;
+        String str6 = str5 + "AAA";
+
+        System.out.println(str5 + str5);
+//        System.out.println(str5.concat("BBB"));
+        System.out.println(str6);
+        System.out.println("BBB".concat(null));
+
     }
 }
-
-/* 실행 결과
-String str1 ="abc";
-String str2 ="abc";
-str1 == str2 ? true
-str1.equals(str2) ? true
-
-String str3 ="abc";
-String str4 ="abc";
-str3 == str4 ? false
-str3.equals(str4) ? true
-*/
